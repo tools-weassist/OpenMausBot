@@ -10,8 +10,8 @@ import { locales } from "./index";
 
 const RETIRED: ReadonlyArray<readonly [string, RegExp, string]> = [
   ["OMB Cloud", /OMB Cloud/i, "WeAssist Cloud"],
-  ["WeAssist Cloud", /WeAssist Cloud/i, "WeAssist Cloud"],
-  ["WeAssist Pro", /WeAssist Pro\b/, "WeAssist Cloud"],
+  ["OpenMausBot Cloud", /OpenMausBot Cloud/i, "WeAssist Cloud"],
+  ["MausBot Pro", /MausBot Pro\b/, "WeAssist Cloud"],
   // \b before "_" fails, so environment names such as OMB_PUBLIC_IPV4 pass.
   ["OMB", /\bOMB\b/, "WeAssist"],
   ["Cloud box", /Cloud box/i, "cloud desktop"],
@@ -58,7 +58,7 @@ const isSource = (name: string) => /\.(?:ts|tsx|mjs|cjs|js)$/.test(name) && !/\.
 const ALLOWED: ReadonlyArray<{ file: string; snippet?: string; why: string }> = [
   { file: "shared/credential-request.ts", snippet: "when Boat is selected", why: "the card that asks for a person's own Boat key" },
   { file: "server/boat-create-idempotency.ts", snippet: "unnamed Boat", why: "own-key repair: boat.dev's own name for a machine" },
-  { file: "src/lib/boat-offer.ts", snippet: "WeAssist introduced me", why: "the email a person sends Boat to claim its credit" },
+  { file: "src/lib/boat-offer.ts", snippet: "MausBot introduced me", why: "the email a person sends Boat to claim its credit" },
   { file: "server/workspace-backup.ts", snippet: "OMB-WORKSPACE-1", why: "a backup file's format marker" },
   { file: "electron/company-backups.mjs", snippet: "OMB-WORKSPACE-1", why: "a backup file's format marker" },
 ];
@@ -138,7 +138,7 @@ describe("one name per thing", () => {
   });
 
   it("the public docs name WeAssist Cloud and the Cloud as the app does", () => {
-    const names = new Set(["OMB Cloud", "WeAssist Cloud", "WeAssist Pro", "Connect to my Cloud", "your Cloud", "my Cloud"]);
+    const names = new Set(["OMB Cloud", "OpenMausBot Cloud", "MausBot Pro", "Connect to my Cloud", "your Cloud", "my Cloud"]);
     const cloudNames = RETIRED.filter(([word]) => names.has(word));
     const pages = (dir: string): string[] => readdirSync(dir).flatMap((name) => {
       const path = join(dir, name);
@@ -185,7 +185,7 @@ describe("one name per thing", () => {
 
   it("the check catches each retired word, and lets own-key Boat and env names through", () => {
     for (const bad of [
-      "Sign in to OMB Cloud", "Sign in to WeAssist Cloud", "Get WeAssist Pro", "WeAssist Pro plans",
+      "Sign in to OMB Cloud", "Sign in to OpenMausBot Cloud", "Get OpenMausBot Pro", "MausBot Pro plans",
       "restart OMB", "Cloud box", "Hosted desktop", "Run it in its cloud VM", "Boat cloud runner",
       "Open your Cloud dashboard", "Connect to my Cloud", "Your Cloud is ready", "Let my Cloud use this Mac",
       "Local (this computer)", "Choose Cloud to wake", "Auto, Cloud or Browser", "including one from T3",
