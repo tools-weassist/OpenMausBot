@@ -1,4 +1,4 @@
-# One OpenMausBot tenant: the harness server plus Caddy for TLS + login.
+# One WeAssist tenant: the harness server plus Caddy for TLS + login.
 #
 # The server only listens on loopback inside its container, and on two Unix
 # sockets in the `edge` volume; Caddy, in its own container, reaches it through
@@ -51,7 +51,7 @@ services:
       OMB_SIGNIN_MEMBER_EMAILS:
       OMB_SIGNIN_SMTP_URL:
       OMB_SIGNIN_SMTP_FROM:
-      # "1": phones pair by QR through MausBot Relay (docs/phone-relay-server.md). Sign the
+      # "1": phones pair by QR through WeAssist Relay (docs/phone-relay-server.md). Sign the
       # container in once first: docker compose exec omb openmausbot login --relay
       OMB_PHONE_RELAY:
     healthcheck:
