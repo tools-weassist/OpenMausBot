@@ -110,7 +110,7 @@ posixOnly("who may answer a card on a shared workspace", () => {
   beforeAll(async () => {
     chmodSync(FAKE_CLI, 0o755);
     home = mkdtempSync(join(tmpdir(), "omb-card-answerers-"));
-    const data = join(home, ".openmausbot");
+    const data = join(home, ".deskbots");
     mkdirSync(data, { recursive: true });
     writeFileSync(join(data, "config.json"), JSON.stringify({
       signIn: { admins: [BOSS], members: [ADA, BOB] },
@@ -302,7 +302,7 @@ posixOnly("who may answer a card on a shared workspace", () => {
 
     // A Slack-shaped request: the worker opens the thread and sends through
     // the guarded route, so no person can be named. Any member may approve it
-    // in WeAssist, as before; nothing waits on an admin.
+    // in Deskbots, as before; nothing waits on an admin.
     const task = await api("POST", `/api/bots/${bot.id}/tasks`, { title: "Slack · C1 · 1.0" });
     expect(task.status, JSON.stringify(task.body)).toBe(201);
     const threadId = task.body.task.threadId as string;

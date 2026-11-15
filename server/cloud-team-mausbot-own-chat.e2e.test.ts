@@ -1,5 +1,5 @@
-// A Team Cloud member's own WeAssist: its main chat is theirs alone, on a Team Cloud with the synthetic Claude CLI. No
-// admin or other member reads it through any route, and its notes go to the person's own layer. A WeAssist made before
+// A Team Cloud member's own Deskbots: its main chat is theirs alone, on a Team Cloud with the synthetic Claude CLI. No
+// admin or other member reads it through any route, and its notes go to the person's own layer. A Deskbots made before
 // this gets the same at the next start, its earlier notes moved out of the bot's own folder.
 import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -25,7 +25,7 @@ let fx: CloudSendFixture, team: CloudTeamFixture;
 let olive = "", mira = "", ben = "";
 
 const planPath = () => join(team.home, "plan.json");
-const dataDir = (...rest: string[]) => join(team.home, ".openmausbot", ...rest);
+const dataDir = (...rest: string[]) => join(team.home, ".deskbots", ...rest);
 const turns = (): Array<{ planKey?: string }> => existsSync(`${planPath()}.evidence.jsonl`)
   ? readFileSync(`${planPath()}.evidence.jsonl`, "utf8").trim().split("\n").filter(Boolean).map((line) => JSON.parse(line)) : [];
 const botsOf = async (token: string, messages = "") => (await team.as(token, "GET", `/api/bots${messages}`)).body.bots as Bot[];
@@ -56,7 +56,7 @@ afterAll(async () => {
 it("is the person's own: private on the wire, its notes in their layer, and nobody else reads it through any route", async () => {
   const maus = await ownMausBot(mira);
   expect(maus.tasks!.find((task) => task.threadId === maus.threadId)?.private, "her main chat is marked hers").toBe(true);
-  expect((maus as Bot & { mainThreadId?: string }).mainThreadId, "and it is still her WeAssist's main chat").toBe(maus.threadId);
+  expect((maus as Bot & { mainThreadId?: string }).mainThreadId, "and it is still her Deskbots's main chat").toBe(maus.threadId);
   const other = await team.as(mira, "POST", `/api/bots/${maus.id}/tasks`, { title: "Another chat" });
   expect(other.status).toBe(201);
   expect(((await botsOf(mira)).find((bot) => bot.id === maus.id) as Bot & { mainThreadId?: string }).mainThreadId, "a newer chat of hers doesn't become it").toBe(maus.threadId);

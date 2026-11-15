@@ -39,10 +39,10 @@ describe("brand", () => {
     expect(brand()).toEqual(DEFAULT_BRAND);
   });
 
-  it("names the product WeAssist, or a white-label brand file by its own name", () => {
+  it("names the product Deskbots, or a white-label brand file by its own name", () => {
     applyBrand({ brand: DEFAULT_BRAND, source: "default", file: "" });
-    expect(productName()).toBe("WeAssist");
-    expect(brand().name).toBe("WeAssist");
+    expect(productName()).toBe("Deskbots");
+    expect(brand().name).toBe("Deskbots");
     applyBrand({ brand: { name: "Acme Bots" }, source: "file", file: "/data/brand.json" });
     expect(productName()).toBe("Acme Bots");
     applyBrand({ brand: DEFAULT_BRAND, source: "default", file: "" });

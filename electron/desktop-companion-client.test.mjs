@@ -226,7 +226,7 @@ describe("desktop companion pairing", () => {
         requestId: "request-https-03",
         fetchImpl,
       }),
-    ).rejects.toThrow("WeAssist HTTPS companion address");
+    ).rejects.toThrow("Deskbots HTTPS companion address");
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 

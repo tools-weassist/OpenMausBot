@@ -126,7 +126,7 @@ describe("an upstream that fails mid-stream", () => {
       const res = await fetch(`${base}/api/health`, { headers: { authorization: "Bearer omb_x" } });
       expect(res.status).toBe(502);
       expect((await res.json()) as { error: string }).toEqual({
-        error: "WeAssist is not running on this computer",
+        error: "Deskbots is not running on this computer",
       });
     });
     expect(escaped).toEqual([]);

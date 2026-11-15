@@ -48,8 +48,8 @@ function install(target: Record<string, unknown> = {}, extra: Record<string, unk
   const data = join(fake, "volumes", "deploy_data");
   mkdirSync(join(root, "bin"));
   mkdirSync(deploy);
-  mkdirSync(join(data, ".openmausbot"), { recursive: true });
-  writeFileSync(join(data, ".openmausbot", "bots.json"), '[{"name":"Mira"}]');
+  mkdirSync(join(data, ".deskbots"), { recursive: true });
+  writeFileSync(join(data, ".deskbots", "bots.json"), '[{"name":"Mira"}]');
   writeFileSync(join(data, "started-by.txt"), "0.1.150\n");
   copyFileSync(SCRIPT, join(deploy, "update.sh"));
   writeFileSync(join(deploy, "docker-compose.yml"), "services: {}\n");
@@ -166,10 +166,10 @@ describe.skipIf(!posix)("deploy/update.sh", () => {
   });
 
   it("says why in the server's own last words when the new version stops as it starts", () => {
-    const box = install({ behaviour: "crashes", lastWords: "This data was written by a newer WeAssist." });
+    const box = install({ behaviour: "crashes", lastWords: "This data was written by a newer Deskbots." });
     const failed = box.run();
     expect(failed.status).toBe(1);
-    expect(failed.stdout).toContain("The update to 0.1.151 did not work: it kept stopping as it started (This data was written by a newer WeAssist.).");
+    expect(failed.stdout).toContain("The update to 0.1.151 did not work: it kept stopping as it started (This data was written by a newer Deskbots.).");
     expect(failed.said.at(-1)).toBe("Your server runs 0.1.150 again, with its data as it was before the update.");
     expect(tree(box.data)["started-by.txt"]).toBe("0.1.150\n0.1.150\n");
   });
@@ -341,7 +341,7 @@ describe.skipIf(!posix)("deploy/update.sh", () => {
     const box = install();
     const before = tree(box.data);
     expect(box.run().status).toBe(0);
-    writeFileSync(join(box.data, ".openmausbot", "bots.json"), "[]");
+    writeFileSync(join(box.data, ".deskbots", "bots.json"), "[]");
     const declined = box.run(["--rollback"], { input: "no\n" });
     expect(declined.status).toBe(4);
     expect(box.state().containers.omb.image).toBe(NEW.id);
@@ -390,7 +390,7 @@ describe.skipIf(!posix)("deploy/update.sh", () => {
 
   it("moves an install the installer made with Caddy in the server's network to the current files, and back on rollback", () => {
     const box = install();
-    const oldCompose = `# Written by WeAssist's installer (deploy/install.sh), and written again each time it runs.
+    const oldCompose = `# Written by Deskbots's installer (deploy/install.sh), and written again each time it runs.
 name: openmausbot
 services:
   omb:

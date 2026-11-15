@@ -45,23 +45,23 @@ jobs:
           # npm attaches its lowercase tarball independently after publishing.
           # The legacy updater bridge mirrors only the desktop/feed assets.
           gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir assets \
-            --pattern '*.yml' --pattern 'WeAssist*' --pattern 'SHA256SUMS-ubuntu-x64.txt'
+            --pattern '*.yml' --pattern 'Deskbots*' --pattern 'SHA256SUMS-ubuntu-x64.txt'
           required=(
             latest-linux.yml latest-mac.yml latest.yml
-            "WeAssist-$version-amd64.deb"
-            "WeAssist-$version-arm64.dmg"
-            "WeAssist-$version-arm64.dmg.blockmap"
-            "WeAssist-$version-arm64.zip"
-            "WeAssist-$version-arm64.zip.blockmap"
-            "WeAssist-$version-setup.exe"
-            "WeAssist-$version-setup.exe.blockmap"
-            "WeAssist-$version-x64.dmg"
-            "WeAssist-$version-x64.dmg.blockmap"
-            "WeAssist-$version-x64.zip"
-            "WeAssist-$version-x64.zip.blockmap"
-            "WeAssist-$version-x86_64.AppImage"
-            WeAssist-amd64.deb WeAssist-intel.dmg WeAssist-setup.exe
-            WeAssist.AppImage WeAssist.dmg SHA256SUMS-ubuntu-x64.txt
+            "Deskbots-$version-amd64.deb"
+            "Deskbots-$version-arm64.dmg"
+            "Deskbots-$version-arm64.dmg.blockmap"
+            "Deskbots-$version-arm64.zip"
+            "Deskbots-$version-arm64.zip.blockmap"
+            "Deskbots-$version-setup.exe"
+            "Deskbots-$version-setup.exe.blockmap"
+            "Deskbots-$version-x64.dmg"
+            "Deskbots-$version-x64.dmg.blockmap"
+            "Deskbots-$version-x64.zip"
+            "Deskbots-$version-x64.zip.blockmap"
+            "Deskbots-$version-x86_64.AppImage"
+            Deskbots-amd64.deb Deskbots-intel.dmg Deskbots-setup.exe
+            Deskbots.AppImage Deskbots.dmg SHA256SUMS-ubuntu-x64.txt
           )
           for file in "${required[@]}"; do
             test -s "assets/$file" || { echo "::error::$TAG is missing $file"; exit 1; }
@@ -80,15 +80,15 @@ jobs:
           const sha512 = (file) => createHash("sha512").update(readFileSync(file)).digest("base64");
           const expected = new Map([
             ["latest-mac.yml", [
-              `WeAssist-${version}-x64.zip`,
-              `WeAssist-${version}-arm64.zip`,
-              `WeAssist-${version}-x64.dmg`,
-              `WeAssist-${version}-arm64.dmg`,
+              `Deskbots-${version}-x64.zip`,
+              `Deskbots-${version}-arm64.zip`,
+              `Deskbots-${version}-x64.dmg`,
+              `Deskbots-${version}-arm64.dmg`,
             ]],
-            ["latest.yml", [`WeAssist-${version}-setup.exe`]],
+            ["latest.yml", [`Deskbots-${version}-setup.exe`]],
             ["latest-linux.yml", [
-              `WeAssist-${version}-x86_64.AppImage`,
-              `WeAssist-${version}-amd64.deb`,
+              `Deskbots-${version}-x86_64.AppImage`,
+              `Deskbots-${version}-amd64.deb`,
             ]],
           ]);
           let bad = 0;

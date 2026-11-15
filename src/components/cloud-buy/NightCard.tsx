@@ -1,4 +1,4 @@
-// WeAssist Cloud's night card, cut like a linocut: the three bots ride a cloud under the moon while this computer's
+// Deskbots Cloud's night card, cut like a linocut: the three bots ride a cloud under the moon while this computer's
 // laptop sleeps on the hill.
 import { memo, useRef, type ReactNode } from "react";
 import { MausAvatar } from "@/components/Avatar";

@@ -434,7 +434,7 @@ for (const expected of [
 const extracted = mkdtempSync(path.join(tmpdir(), "omb-deb-verify-"));
 try {
   execFileSync("dpkg-deb", ["--extract", deb, extracted]);
-  const debAppRoot = path.join(extracted, "opt", "WeAssist");
+  const debAppRoot = path.join(extracted, "opt", "Deskbots");
   requireDirectoryMode(debAppRoot, 0o755);
   const debResources = path.join(debAppRoot, "resources");
   // Routes the in-app updater to the package-manager hand-off.
@@ -470,8 +470,8 @@ try {
   requireFile(scalableIcon);
   const desktop = readFileSync(desktopFile, "utf8");
   for (const expected of [
-    "Name=WeAssist",
-    "Exec=/opt/WeAssist/openmausbot %U",
+    "Name=Deskbots",
+    "Exec=/opt/Deskbots/openmausbot %U",
     "Icon=openmausbot",
     "StartupWMClass=com.openmausbot.app",
     "Categories=Utility;",

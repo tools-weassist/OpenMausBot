@@ -1,5 +1,5 @@
 // This computer's server, started as the desktop app starts it (its private port emulated over Node's IPC), and servers of
-// the person's own (`openmausbot serve`, nothing of WeAssist Cloud), each paired with this app as a pairing link pairs it.
+// the person's own (`openmausbot serve`, nothing of Deskbots Cloud), each paired with this app as a pairing link pairs it.
 // Main's own wiring for the move to such a server (electron/own-home-main.mjs) sits between them, its requests carrying
 // the pairing's session as the window's would. Disposable homes and a synthetic Claude CLI; no network.
 import { randomBytes } from "node:crypto";
@@ -61,7 +61,7 @@ export async function launchOwnHomeFixture({ env = {} }: { env?: NodeJS.ProcessE
 
   async function start(name: string, own: NodeJS.ProcessEnv, port: number, extra: string[] = [], ipc = false): Promise<ChildProcess> {
     const home = join(root, name);
-    const dataDir = join(home, ".openmausbot");
+    const dataDir = join(home, ".deskbots");
     mkdirSync(dataDir, { recursive: true });
     const cli = join(home, "fixture-claude.mjs");
     writeFileSync(cli, `#!/usr/bin/env node
@@ -137,7 +137,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     // `openmausbot pair` on that server, then the link opened in this app: a session of the admin scope.
     const minted = await fetch(`${base}/api/auth/pairing`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ label: "My desktop" }) });
     const code = (await minted.json() as { code: string }).code;
-    const paired = await fetch(`${base}/api/auth/pair`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, label: "WeAssist app" }) });
+    const paired = await fetch(`${base}/api/auth/pair`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, label: "Deskbots app" }) });
     const token = (await paired.json() as { token: string }).token;
     if (typeof token !== "string") throw new Error(`could not pair with ${name}`);
     const as: Side = async (method, path, body) => {
@@ -145,7 +145,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
         ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
       return { status: response.status, body: parse(await response.text()) };
     };
-    const server: OwnServer = { name, base, dataDir: join(root, `server-${servers.length + 1}`, ".openmausbot"), token, as,
+    const server: OwnServer = { name, base, dataDir: join(root, `server-${servers.length + 1}`, ".deskbots"), token, as,
       place: { id: `place-${servers.length + 1}`, kind: "remote", name, origin: base } };
     servers.push(server);
     return server;
@@ -181,7 +181,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
   listen();
 
   return {
-    root, desktopBase, desktopDataDir: join(root, "desktop", ".openmausbot"), ownerCapability: capability, local, addServer, journalFile, spies, windowFetch, logs: () => logs,
+    root, desktopBase, desktopDataDir: join(root, "desktop", ".deskbots"), ownerCapability: capability, local, addServer, journalFile, spies, windowFetch, logs: () => logs,
     get main() { return main; },
     get beforeJournalWrite() { return fixture.beforeJournalWrite; },
     set beforeJournalWrite(hook) { fixture.beforeJournalWrite = hook; },

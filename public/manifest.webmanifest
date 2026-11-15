@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "WeAssist",
-  "short_name": "WeAssist",
+  "name": "Deskbots",
+  "short_name": "Deskbots",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

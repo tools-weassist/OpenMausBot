@@ -4,15 +4,15 @@ import { TalkServerError } from "./talk-server.mjs";
 export const TALK_TIMING = Object.freeze({ replyHideMs: 12_000, noticeHideMs: 4_000, stillWorkingMs: 120_000, hoverRecheckMs: 500, maxListenMs: 60_000 });
 
 export const TALK_TEXT = Object.freeze({
-  busy: "Voice is in use in WeAssist",
-  serverDown: "Open WeAssist to talk",
-  starting: "WeAssist is still starting. Try again in a moment.",
-  noMausbot: "Set up WeAssist first, then try again.",
-  moved: "WeAssist lives on My Cloud now — talk to it there",
+  busy: "Voice is in use in Deskbots",
+  serverDown: "Open Deskbots to talk",
+  starting: "Deskbots is still starting. Try again in a moment.",
+  noMausbot: "Set up Deskbots first, then try again.",
+  moved: "Deskbots lives on My Cloud now — talk to it there",
   permission: "Talking needs Microphone + Speech Recognition access — System Settings → Privacy & Security.",
   dictationOff: "Turn on Dictation in System Settings → Keyboard, then try again.",
   unavailable: "Talking couldn't start. Try again.",
-  failed: "WeAssist couldn't take that · Open chat",
+  failed: "Deskbots couldn't take that · Open chat",
 });
 
 const SPEECH_PROBLEMS = new Map([

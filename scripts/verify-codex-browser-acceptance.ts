@@ -1,4 +1,4 @@
-// Real model acceptance through the full, isolated WeAssist server.
+// Real model acceptance through the full, isolated Deskbots server.
 // The prompts contain goals only, never tool names or execution advice.
 import { copyFileSync, mkdirSync, writeFileSync, unlinkSync } from "node:fs";
 import { join, resolve } from "node:path";

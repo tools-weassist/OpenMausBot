@@ -115,7 +115,7 @@ describe("control-omb command mapping", () => {
     });
   });
 
-  it("rejects an available engine when the endpoint is not WeAssist", async () => {
+  it("rejects an available engine when the endpoint is not Deskbots", async () => {
     const callTool = vi.fn(async (name: string) => name === "get_system_health"
       ? { status: "connected", app: "another-app" }
       : { instances: [{ instanceId: "ready", snapshot: { state: "available" } }] });
@@ -132,7 +132,7 @@ describe("control-omb command mapping", () => {
       callTool: vi.fn() as any,
       env: {},
     })).rejects.toMatchObject({
-      message: "mutating commands require an explicit WeAssist instance",
+      message: "mutating commands require an explicit Deskbots instance",
     });
   });
 
@@ -184,7 +184,7 @@ describe("control-omb command mapping", () => {
       callTool: vi.fn() as any,
       env: {},
     })).rejects.toMatchObject({
-      message: "mutating commands require an explicit WeAssist instance",
+      message: "mutating commands require an explicit Deskbots instance",
     });
   });
 
@@ -230,7 +230,7 @@ describe("control-omb command mapping", () => {
     });
     await expect(runControlOmb(["set-model", "--bot", "bot-1", "--instance", "claude", "--model", "model-b"], {
       callTool: callTool as any, env: {},
-    })).rejects.toThrow("explicit WeAssist instance");
+    })).rejects.toThrow("explicit Deskbots instance");
   });
 });
 

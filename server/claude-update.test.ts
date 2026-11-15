@@ -51,7 +51,7 @@ describe("updateClaudeCli", () => {
     };
 
     await expect(updateClaudeCli("claude", {}, execute, noAppCopy)).rejects.toThrow(
-      "Claude finished updating, but WeAssist could not verify",
+      "Claude finished updating, but Deskbots could not verify",
     );
   });
 

@@ -431,7 +431,7 @@ export function createProxyHandler(options: ProxyOptions) {
     // session; the owner enables this per device, off by default.
     if (isCloudDesktopAccess(method, path) && !device?.cloudDesktopAccess) {
       return sendJson(res, 403, {
-        error: "computer access is off for this device — enable it in WeAssist → Settings → Remote access",
+        error: "computer access is off for this device — enable it in Deskbots → Settings → Remote access",
       });
     }
 
@@ -520,7 +520,7 @@ export function createProxyHandler(options: ProxyOptions) {
           const fail = () => {
             if (finished) return;
             finished = true;
-            sendJson(res, 502, { error: "WeAssist is not ready on this computer" });
+            sendJson(res, 502, { error: "Deskbots is not ready on this computer" });
           };
           harness.on("data", (chunk: Buffer) => {
             size += chunk.length;
@@ -693,7 +693,7 @@ export function createProxyHandler(options: ProxyOptions) {
           // These two are rewritten or withdrawn whole, so neither can start before its end.
           if (browserRequest || viewers.rewritesJoin(path)) {
             harness.destroy();
-            sendJson(res, 502, { error: "the response from WeAssist was too large" });
+            sendJson(res, 502, { error: "the response from Deskbots was too large" });
             return;
           }
           streamScrubbedJson(harness, res, chunks);
@@ -779,8 +779,8 @@ export function createProxyHandler(options: ProxyOptions) {
         res,
         timedOut ? 504 : 502,
         timedOut
-          ? { error: "WeAssist did not respond" }
-          : { error: "WeAssist is not running on this computer" },
+          ? { error: "Deskbots did not respond" }
+          : { error: "Deskbots is not running on this computer" },
       );
     });
     req.pipe(upstream);

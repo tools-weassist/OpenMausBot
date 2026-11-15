@@ -1,7 +1,7 @@
 // Two real servers for Send to My Cloud: this computer's, started as the desktop app starts it (its private
 // utility-process port emulated over Node's IPC, the owner's capability delivered through it), and the person's Cloud
 // home, paired the way the Admin pairs it. Main's own wiring (electron/one-home-main.mjs, which installs
-// cloud-send-main.mjs) sits between them with a fake ipcMain and a fake WeAssist Cloud sign-in. Either server can be
+// cloud-send-main.mjs) sits between them with a fake ipcMain and a fake Deskbots Cloud sign-in. Either server can be
 // killed and started again on its own data, as an app that quits or crashes is. Disposable homes, a synthetic Claude CLI
 // and a fake 1Password SDK; no network.
 import { randomBytes } from "node:crypto";
@@ -66,7 +66,7 @@ export interface CloudSendFixture {
   handoff(what: ConnectionAsk): Promise<any>;
   /** The one-time move (one-home.mjs), as main runs it in the app that is open now. */
   oneHome: { kick(): Promise<void>; view(): OneHomeView | null; away(): boolean };
-  /** The WeAssist Cloud sign-in main reads: the Admin's word on this account's Cloud, its export of a held one, the Admin
+  /** The Deskbots Cloud sign-in main reads: the Admin's word on this account's Cloud, its export of a held one, the Admin
    * taking a computer's word that its move is done (when a test sets it), and the Admin's team pairing for one of the
    * account's teams (`state.teams`). */
   account: CloudSendAccount;
@@ -91,7 +91,7 @@ export interface CloudSendFixture {
   /** The Team Cloud started with `team` (docs/team-cloud.md), paired the way the Admin pairs it: a signed body with
    * the member claim, redeemed at /api/auth/pair. Null without `team`. */
   team: CloudTeamFixture | null;
-  /** Another computer of the same person, with its own server, app and WeAssist Cloud sign-in, that can move to the same
+  /** Another computer of the same person, with its own server, app and Deskbots Cloud sign-in, that can move to the same
    * My Cloud. `label`: its name (OMB_ENVIRONMENT_LABEL). */
   addDesk(options: { label: string }): Promise<CloudSendDesk>;
   close(): Promise<void>;
@@ -148,7 +148,7 @@ function fakeOnePassword(at: string, token: string): string {
 exports.createClient = async ({ auth }) => {
   if (auth !== ${JSON.stringify(token)}) throw new Error("error authenticating: invalid service account token");
   return {
-    vaults: { list: async () => [{ id: "v1", title: "Shared with WeAssist" }] },
+    vaults: { list: async () => [{ id: "v1", title: "Shared with Deskbots" }] },
     items: { list: async () => [], getAll: async () => ({ individualResponses: [] }) },
   };
 };
@@ -189,7 +189,7 @@ export async function launchCloudSendFixture({ onePasswordToken, cloudOnePasswor
 
   async function start(name: string, own: NodeJS.ProcessEnv, port: number, extra: string[] = [], ipc = false, acceptedToken = onePasswordToken, calls = 0, engine = "", signedIn = true): Promise<ChildProcess> {
     const home = join(root, name);
-    const dataDir = join(home, ".openmausbot");
+    const dataDir = join(home, ".deskbots");
     mkdirSync(dataDir, { recursive: true });
     const cli = join(home, "fixture-claude.mjs");
     const tools = calls ? JSON.stringify(Array.from({ length: calls }, (_, i) => ({ name: "Bash", input: { command: `echo step ${i}` } }))) : "";
@@ -260,7 +260,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     return ((await response.json()) as { code: string }).code;
   };
   const pairOwner = async () => {
-    const paired = await fetch(`${cloudBase}/api/auth/pair`, { method: "POST", headers: { ...EDGE, "content-type": "application/json" }, body: JSON.stringify({ code: await mintCode("WeAssist app (Cloud)") }) });
+    const paired = await fetch(`${cloudBase}/api/auth/pair`, { method: "POST", headers: { ...EDGE, "content-type": "application/json" }, body: JSON.stringify({ code: await mintCode("Deskbots app (Cloud)") }) });
     return ((await paired.json()) as { token: string }).token;
   };
   let owner = await pairOwner();
@@ -283,8 +283,8 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     const stopOverIpc = process.platform === "win32";
     const stopOnMessage = `data:text/javascript,${encodeURIComponent('process.on("message", (message) => { if (message === "stop") process.emit("SIGTERM"); }); process.channel?.unref();')}`;
     if (team.noAi) {
-      mkdirSync(join(root, "team", ".openmausbot"), { recursive: true });
-      writeFileSync(join(root, "team", ".openmausbot", "config.json"), JSON.stringify({ instances: Object.fromEntries(["claude", "codex", "cursor", "githubCopilot", "openaiCompat", "qwen", "hermes", "pi", "grok"].map((id) => [id, { driver: "not-a-real-driver" }])) }));
+      mkdirSync(join(root, "team", ".deskbots"), { recursive: true });
+      writeFileSync(join(root, "team", ".deskbots", "config.json"), JSON.stringify({ instances: Object.fromEntries(["claude", "codex", "cursor", "githubCopilot", "openaiCompat", "qwen", "hermes", "pi", "grok"].map((id) => [id, { driver: "not-a-real-driver" }])) }));
     }
     const startTeam = (more: NodeJS.ProcessEnv = {}) => start("team", { OMB_CLOUD_ROLE: "team", OMB_CLOUD_TEAM_ID: team.id, OMB_CLOUD_TEAM_NAME: team.name,
       OMB_CLOUD_MACHINE_ID: "0d9e8f7a-6b5c-4d3e-9f8a-7b6c5d4e3f2a", OMB_CLOUD_ADMIN_URL: "https://cloud.example.test", OMB_CLOUD_BOOTSTRAP_SECRET: secret,
@@ -315,7 +315,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     teamFixture = {
       base: teamBase, home: join(root, "team"), id: team.id, name: team.name,
       async grant(member) {
-        const body = JSON.stringify({ label: "WeAssist app (Team Cloud)", ttlSeconds: 300, team: { id: team.id, name: team.name }, member });
+        const body = JSON.stringify({ label: "Deskbots app (Team Cloud)", ttlSeconds: 300, team: { id: team.id, name: team.name }, member });
         const timestamp = String(Math.floor(Date.now() / 1000)), nonce = randomBytes(16).toString("base64url");
         const minted = await fetch(`${teamBase}/api/cloud/pairing`, { method: "POST", headers: { ...EDGE, "content-type": "application/json",
           "x-omb-cloud-timestamp": timestamp, "x-omb-cloud-nonce": nonce, "x-omb-cloud-signature": `v1=${cloudPairingSignature(secret, timestamp, nonce, body)}` }, body });
@@ -324,7 +324,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
       },
       async pair(member, options = {}) {
         const claims = options.body ?? { team: { id: team.id, name: team.name }, ...(member ? { member } : {}) };
-        const body = JSON.stringify({ label: options.label ?? "WeAssist app (Team Cloud)", ttlSeconds: 300, ...claims });
+        const body = JSON.stringify({ label: options.label ?? "Deskbots app (Team Cloud)", ttlSeconds: 300, ...claims });
         const timestamp = String(Math.floor(Date.now() / 1000)), nonce = randomBytes(16).toString("base64url");
         const minted = await remember(await teamFetch("/api/cloud/pairing", { method: "POST", headers: { ...EDGE, "content-type": "application/json",
           "x-omb-cloud-timestamp": timestamp, "x-omb-cloud-nonce": nonce, "x-omb-cloud-signature": `v1=${cloudPairingSignature(options.secret ?? secret, timestamp, nonce, body)}` }, body }));
@@ -403,7 +403,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     cloudPage: (event) => (event as { page?: "local" | "cloud" })?.page ?? null,
     server: () => port,
     localRequest: async (route, init = {}) => remember(await fetch(`${desktopBase}${route}`, { ...init, headers: { ...init.headers as Record<string, string>, "x-openmausbot-desktop-owner": ownerCapability } })),
-    home: () => ({ origin: cloudBase, grant: async () => ({ origin: cloudBase, code: await mintCode("WeAssist app (Cloud)") }) }),
+    home: () => ({ origin: cloudBase, grant: async () => ({ origin: cloudBase, code: await mintCode("Deskbots app (Cloud)") }) }),
     cookieFetch: throughEdge(owner) as typeof fetch,
     reconnect: async () => false,
     power: { asleep: () => false },
@@ -414,7 +414,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     engineWaitMs: 2_000,
     patience: { stallMs: 0, waits: [0], blips: [] },
     ...(space ? { space } : {}),
-    account: () => ({ state: () => account.state, pairHome: async () => ({ origin: cloudBase, code: await mintCode("WeAssist app (Cloud)"), expiresAt: Date.now() + 300_000 }), exportHome: (options) => account.exportHome(options),
+    account: () => ({ state: () => account.state, pairHome: async () => ({ origin: cloudBase, code: await mintCode("Deskbots app (Cloud)"), expiresAt: Date.now() + 300_000 }), exportHome: (options) => account.exportHome(options),
       reportMove: async (options) => (account.reportMove ? account.reportMove(options) : false), reportKept: async (options) => (account.reportKept ? account.reportKept(options) : false),
       pairTeam: (teamId: string) => account.pairTeam(teamId) }),
     teamJournal: {
@@ -444,7 +444,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
       origin: () => cloudBase,
       asleep: () => false,
       read: (route) => throughEdge(owner)(`${cloudBase}${route}`, { headers: { accept: "application/json", ...BACKGROUND_HEADERS } }),
-      open: () => openOwnerSession({ origin: cloudBase, grant: async () => ({ origin: cloudBase, code: await mintCode("WeAssist app (Cloud)") }) }, throughEdge(null) as typeof fetch),
+      open: () => openOwnerSession({ origin: cloudBase, grant: async () => ({ origin: cloudBase, code: await mintCode("Deskbots app (Cloud)") }) }, throughEdge(null) as typeof fetch),
     },
     handoff: (what) => asks.request(port, what as ConnectionAsk),
     store: {
@@ -482,7 +482,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
       cloudPage: (event) => (event as { page?: "local" | "cloud" })?.page ?? null,
       server: () => ipc,
       localRequest: async (route, init = {}) => remember(await fetch(`${base}${route}`, { ...init, headers: { ...init.headers as Record<string, string>, "x-openmausbot-desktop-owner": capability } })),
-      home: () => ({ origin: cloudBase, grant: async () => ({ origin: cloudBase, code: await mintCode("WeAssist app (Cloud)") }) }),
+      home: () => ({ origin: cloudBase, grant: async () => ({ origin: cloudBase, code: await mintCode("Deskbots app (Cloud)") }) }),
       cookieFetch: throughOwner,
       reconnect: async () => false,
       power: { asleep: () => false },
@@ -492,7 +492,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
       fetch: throughEdge(null) as typeof fetch,
       engineWaitMs: 2_000,
       patience: { stallMs: 0, waits: [0], blips: [] },
-      account: () => ({ state: () => deskAccount.state, pairHome: async () => ({ origin: cloudBase, code: await mintCode("WeAssist app (Cloud)"), expiresAt: Date.now() + 300_000 }), exportHome: (options) => deskAccount.exportHome(options),
+      account: () => ({ state: () => deskAccount.state, pairHome: async () => ({ origin: cloudBase, code: await mintCode("Deskbots app (Cloud)"), expiresAt: Date.now() + 300_000 }), exportHome: (options) => deskAccount.exportHome(options),
         reportMove: async (options) => (deskAccount.reportMove ? deskAccount.reportMove(options) : false), reportKept: async (options) => (deskAccount.reportKept ? deskAccount.reportKept(options) : false),
         pairTeam: (teamId: string) => deskAccount.pairTeam(teamId) }),
       teamJournal: {
@@ -518,7 +518,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     listenIt();
     desks.push({ close: () => deskMain.close() });
     return {
-      base, dataDir: join(root, name, ".openmausbot"), local: deskLocal, account: deskAccount, journalFile, spies,
+      base, dataDir: join(root, name, ".deskbots"), local: deskLocal, account: deskAccount, journalFile, spies,
       oneHome: { kick: () => deskMain.kick(), view: () => deskMain.view(), away: () => deskMain.away() },
       async relaunch({ kill = true } = {}) {
         deskMain.close();
@@ -548,7 +548,7 @@ await import(${JSON.stringify(pathToFileURL(join(SERVER_DIR, "testing", "fake-cl
     get intercept() { return fixture.intercept; },
     set intercept(hook) { fixture.intercept = hook; },
     oneHome: { kick: () => main.kick(), view: () => main.view(), away: () => main.away() },
-    desktopDataDir: join(root, "desktop", ".openmausbot"),
+    desktopDataDir: join(root, "desktop", ".deskbots"),
     async relaunch({ kill = true, cloud: cloudMore, dataDir } = {}) {
       main.close();
       await waitForExit(desktop, { signal: kill ? "SIGKILL" : "SIGTERM" });

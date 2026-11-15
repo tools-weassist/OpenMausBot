@@ -1,4 +1,4 @@
-// Packaged: an embedded cua-driver daemon, so macOS TCC grants attribute to WeAssist; dev attaches to CuaDriver.app.
+// Packaged: an embedded cua-driver daemon, so macOS TCC grants attribute to Deskbots; dev attaches to CuaDriver.app.
 // Agents use the stdio MCP proxy, which executes nothing; the host-owned daemon does.
 
 import { app, ipcMain } from "electron";
@@ -187,7 +187,7 @@ export function resolveEmbeddedDriverBinary(binary) {
   if (process.platform !== "win32" || !app.isPackaged || process.env.CUA_DRIVER_PATH ||
       binary !== path.join(process.resourcesPath, "cua-driver.exe")) return binary;
   const background = path.join(process.resourcesPath, "cua-driver-background.exe");
-  if (!fs.existsSync(background)) throw new Error("Packaged background CUA driver is missing; reinstall WeAssist");
+  if (!fs.existsSync(background)) throw new Error("Packaged background CUA driver is missing; reinstall Deskbots");
   return background;
 }
 
@@ -278,7 +278,7 @@ async function startEmbedded(binary, signal) {
         !permissionStatus.accessibility && "Accessibility",
         !permissionStatus.screenRecording && "Screen Recording",
       ].filter(Boolean).join(" and ");
-      throw new Error(`${missing || "macOS permissions"} required; grant access in System Settings and restart WeAssist`);
+      throw new Error(`${missing || "macOS permissions"} required; grant access in System Settings and restart Deskbots`);
     }
   }
   // The native SDK owns the child lifecycle but exposes no windowsHide option.

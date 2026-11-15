@@ -162,7 +162,7 @@ describe("following a notification", () => {
     expect(unread("finished")).toBe(false);
   });
 
-  it("opens the brief in WeAssist's chat while WeAssist is hidden from the sidebar", async () => {
+  it("opens the brief in Deskbots's chat while Deskbots is hidden from the sidebar", async () => {
     await threadsShown(true);
     server = { ...server, defaultBot: {}, sidebarHidden: true };
     stream().send({ kind: "bot", bot: structuredClone(server) });

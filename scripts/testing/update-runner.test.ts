@@ -41,8 +41,8 @@ function install(options: { stable?: Image; running?: Image; updater?: "real" | 
   const fake = join(root, "fake");
   const bin = join(root, "bin");
   const data = join(fake, "volumes", "deploy_data");
-  for (const dir of [bin, deploy, join(data, ".openmausbot"), join(state, "request"), join(state, "status")]) mkdirSync(dir, { recursive: true });
-  writeFileSync(join(data, ".openmausbot", "bots.json"), '[{"name":"Mira"}]');
+  for (const dir of [bin, deploy, join(data, ".deskbots"), join(state, "request"), join(state, "status")]) mkdirSync(dir, { recursive: true });
+  writeFileSync(join(data, ".deskbots", "bots.json"), '[{"name":"Mira"}]');
   writeFileSync(join(deploy, "docker-compose.yml"), "services: {}\n");
   writeFileSync(join(deploy, ".env"), "DOMAIN=maus.example.test\n");
   const argv = join(root, "update-sh-argv");
