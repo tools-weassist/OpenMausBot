@@ -6508,6 +6508,7 @@
   "composer.setupRequest.cancel": "Остановить настройку {name}",
   "about.version": "Версия {version}",
   "about.connectedTo": "Подключено к {name} · версия {version}",
+  "about.poweredBy": "Работает на WeAssist",
   "sidebar.update.availableOther": "{name} можно обновить до {version}",
   "sidebar.update.upToDateOther": "{name}: установлена последняя версия",
   "sidebar.update.howOther": "Тот, кто управляет этим сервером, обновляет его командой: {command}",

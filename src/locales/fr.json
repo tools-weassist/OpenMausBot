@@ -753,6 +753,7 @@
   "sidebar.menu.about": "À propos",
   "about.version": "Version {version}",
   "about.connectedTo": "Connecté à {name} · version {version}",
+  "about.poweredBy": "Propulsé par WeAssist",
   "sidebar.menu.help": "Centre d'aide",
   "sidebar.menu.feedback": "Envoyer un retour",
   "sidebar.update.startingDownload": "Démarrage du téléchargement…",

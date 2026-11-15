@@ -872,6 +872,7 @@
   "sidebar.menu.about": "Про застосунок",
   "about.version": "Версія {version}",
   "about.connectedTo": "Підключено до {name} · версія {version}",
+  "about.poweredBy": "Працює на WeAssist",
   "sidebar.menu.help": "Довідковий центр",
   "sidebar.menu.feedback": "Надіслати відгук",
   "sidebar.update.startingDownload": "Починаємо завантаження…",

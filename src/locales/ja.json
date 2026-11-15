@@ -2175,6 +2175,7 @@
   "sidebar.menu.about": "このアプリについて",
   "about.version": "バージョン {version}",
   "about.connectedTo": "{name} に接続中 · バージョン {version}",
+  "about.poweredBy": "Powered by WeAssist",
   "sidebar.menu.shortcuts": "キーボードショートカット",
   "sidebar.menu.help": "ヘルプセンター",
   "sidebar.menu.feedback": "フィードバックを送る",

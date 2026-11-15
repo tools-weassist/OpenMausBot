@@ -1502,6 +1502,7 @@
   "sidebar.menu.about": "Hakkında",
   "about.version": "Sürüm {version}",
   "about.connectedTo": "Bağlı: {name} · sürüm {version}",
+  "about.poweredBy": "WeAssist tarafından desteklenmektedir",
   "sidebar.menu.shortcuts": "Klavye kısayolları",
   "sidebar.menu.help": "Yardım Merkezi",
   "sidebar.menu.feedback": "Geri Bildirim Gönder",

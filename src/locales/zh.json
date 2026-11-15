@@ -2206,6 +2206,7 @@
   "sidebar.menu.about": "关于",
   "about.version": "版本 {version}",
   "about.connectedTo": "已连接到 {name} · 版本 {version}",
+  "about.poweredBy": "由 WeAssist 提供技术支持",
   "sidebar.menu.shortcuts": "键盘快捷键",
   "sidebar.menu.help": "帮助中心",
   "sidebar.menu.feedback": "发送反馈",

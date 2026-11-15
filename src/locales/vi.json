@@ -1502,6 +1502,7 @@
   "sidebar.menu.about": "Giới thiệu",
   "about.version": "Phiên bản {version}",
   "about.connectedTo": "Đã kết nối với {name} · phiên bản {version}",
+  "about.poweredBy": "Được hỗ trợ bởi WeAssist",
   "sidebar.menu.shortcuts": "Phím tắt",
   "sidebar.menu.help": "Trung tâm trợ giúp",
   "sidebar.menu.feedback": "Gửi phản hồi",

@@ -1798,6 +1798,7 @@
   "sidebar.menu.about": "Acerca de",
   "about.version": "Versión {version}",
   "about.connectedTo": "Conectado a {name} · versión {version}",
+  "about.poweredBy": "Con la tecnología de WeAssist",
   "sidebar.menu.shortcuts": "Atajos de teclado",
   "sidebar.menu.help": "Centro de ayuda",
   "sidebar.menu.feedback": "Enviar comentarios",

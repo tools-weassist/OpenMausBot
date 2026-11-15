@@ -917,6 +917,7 @@
   "sidebar.menu.about": "Über",
   "about.version": "Version {version}",
   "about.connectedTo": "Verbunden mit {name} · Version {version}",
+  "about.poweredBy": "Bereitgestellt von WeAssist",
   "sidebar.menu.help": "Hilfecenter",
   "sidebar.menu.feedback": "Feedback senden",
   "sidebar.update.startingDownload": "Download startet…",

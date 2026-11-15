@@ -2351,6 +2351,7 @@
   "sidebar.menu.about": "關於",
   "about.version": "版本 {version}",
   "about.connectedTo": "已連線到 {name} · 版本 {version}",
+  "about.poweredBy": "由 WeAssist 提供技術支援",
   "sidebar.menu.shortcuts": "鍵盤快速鍵",
   "sidebar.menu.help": "說明中心",
   "sidebar.menu.feedback": "傳送意見回饋",

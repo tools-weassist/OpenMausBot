@@ -1928,6 +1928,7 @@
   "sidebar.menu.about": "O programie",
   "about.version": "Wersja {version}",
   "about.connectedTo": "Połączono z: {name} · wersja {version}",
+  "about.poweredBy": "Napędzane przez WeAssist",
   "sidebar.menu.shortcuts": "Skróty klawiszowe",
   "sidebar.menu.help": "Centrum pomocy",
   "sidebar.menu.feedback": "Wyślij opinię",

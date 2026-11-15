@@ -753,6 +753,7 @@
   "sidebar.menu.about": "परिचय",
   "about.version": "संस्करण {version}",
   "about.connectedTo": "{name} से कनेक्टेड · संस्करण {version}",
+  "about.poweredBy": "WeAssist द्वारा संचालित",
   "sidebar.menu.help": "सहायता केंद्र",
   "sidebar.menu.feedback": "प्रतिक्रिया भेजें",
   "sidebar.update.startingDownload": "डाउनलोड शुरू हो रहा है…",
