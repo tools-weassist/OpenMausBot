@@ -70,7 +70,7 @@ describe("call capability guidance", () => {
     }, "other"), false, false);
     expect(help).toEqual({
       label: "Calls where you take turns need the desktop app",
-      reason: "They listen from this computer, so they need WeAssist on a Mac, Windows or Linux computer.",
+      reason: "They listen from this computer, so they need Deskbots on a Mac, Windows or Linux computer.",
     });
   });
 
@@ -101,7 +101,7 @@ describe("call capability guidance", () => {
       onDevice: true,
     }), false, false)).toEqual({
       label: "Calls aren't available right now",
-      reason: "The speech service is unavailable in this app build. Restart or update WeAssist.",
+      reason: "The speech service is unavailable in this app build. Restart or update Deskbots.",
     });
   });
 });

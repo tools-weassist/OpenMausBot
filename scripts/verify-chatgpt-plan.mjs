@@ -56,7 +56,7 @@ async function start() {
     }
     else if (message.method === "turn/completed") completions?.(message.params);
   });
-  await rpc("initialize", { clientInfo: { name: "openmausbot", title: "WeAssist", version: "fixture" } });
+  await rpc("initialize", { clientInfo: { name: "openmausbot", title: "Deskbots", version: "fixture" } });
   child.stdin.write(JSON.stringify({ method: "initialized" }) + "\n");
 }
 function rpc(method, params) {

@@ -45,7 +45,7 @@ export function codexDeveloperInstructions(config: unknown, botInstructions: str
   }
   // Native rules go last, keeping their precedence over the bot's.
   return configured
-    ? `${botInstructions || "No WeAssist bot-specific instructions remain."}\n\n${configured}`
+    ? `${botInstructions || "No Deskbots bot-specific instructions remain."}\n\n${configured}`
     : botInstructions;
 }
 
@@ -80,8 +80,8 @@ export async function syncCodexInstructions(
           role: "developer",
           content: [{
             type: "input_text",
-            text: "The following replaces the previous developer instruction block supplied by WeAssist, including its native configured rules and bot-specific instructions. Other Codex instructions and permissions still apply.\n\n"
-              + (instructions || "No WeAssist bot-specific instructions remain."),
+            text: "The following replaces the previous developer instruction block supplied by Deskbots, including its native configured rules and bot-specific instructions. Other Codex instructions and permissions still apply.\n\n"
+              + (instructions || "No Deskbots bot-specific instructions remain."),
           }],
         }],
       });

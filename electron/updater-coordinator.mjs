@@ -89,7 +89,7 @@ export function createUpdaterCoordinator(
       setState({
         status: "error",
         retryable: false,
-        message: `${updateErrorMessage(error)} Quit and reopen WeAssist before trying the update again.`,
+        message: `${updateErrorMessage(error)} Quit and reopen Deskbots before trying the update again.`,
         ...said(error),
       });
       return;

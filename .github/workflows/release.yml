@@ -190,7 +190,7 @@ jobs:
 
       - name: "Gate: both packaged apps use the canonical updater feed"
         run: |
-          for app in release/mac-arm64/WeAssist.app release/mac/WeAssist.app; do
+          for app in release/mac-arm64/Deskbots.app release/mac/Deskbots.app; do
             update="$app/Contents/Resources/app-update.yml"
             test -f "$update" || { echo "::error::missing $update"; exit 1; }
             grep -Eq '^owner: milind-soni$' "$update" || { echo "::error::wrong update owner in $update"; exit 1; }
@@ -199,7 +199,7 @@ jobs:
 
       - name: "Gate: the signature must verify BEFORE notarization"
         run: |
-          for app in release/mac-arm64/WeAssist.app release/mac/WeAssist.app; do
+          for app in release/mac-arm64/Deskbots.app release/mac/Deskbots.app; do
             codesign --verify --deep --strict "$app"
             bin="$app/Contents/Resources/cloudflared/cloudflared"
             test -x "$bin" || { echo "::error::missing executable $bin"; exit 1; }
@@ -224,8 +224,8 @@ jobs:
       - name: "Gate: signed native browser works with an empty home"
         run: |
           case "$(node -p process.arch)" in
-            arm64) resources="$PWD/release/mac-arm64/WeAssist.app/Contents/Resources" ;;
-            x64) resources="$PWD/release/mac/WeAssist.app/Contents/Resources" ;;
+            arm64) resources="$PWD/release/mac-arm64/Deskbots.app/Contents/Resources" ;;
+            x64) resources="$PWD/release/mac/Deskbots.app/Contents/Resources" ;;
             *) exit 1 ;;
           esac
           node scripts/smoke-browser-bundle.mjs --resources "$resources"
@@ -233,7 +233,7 @@ jobs:
 
       - name: "Gate: both packaged servers start and every helper path resolves"
         run: |
-          for app in release/mac-arm64/WeAssist.app release/mac/WeAssist.app; do
+          for app in release/mac-arm64/Deskbots.app release/mac/Deskbots.app; do
             res="$app/Contents/Resources"
             # the server tree is plain JS — runnable on the runner's node
             # regardless of the app binary's arch
@@ -253,7 +253,7 @@ jobs:
           console.log(`ok: ${Object.keys(SPAWNED_PROXIES).length} proxies resolve in ${server}`);
           EOF
             # the speech helper is a nested signed .app and stays universal
-            speech="$res/WeAssist Speech.app/Contents/MacOS/speech-helper"
+            speech="$res/Deskbots Speech.app/Contents/MacOS/speech-helper"
             lipo -archs "$speech" | grep -q "x86_64" || { echo "::error::$speech lacks x86_64"; exit 1; }
             lipo -archs "$speech" | grep -q "arm64" || { echo "::error::$speech lacks arm64"; exit 1; }
             # every other native payload carries only this app's own CPU slice
@@ -302,16 +302,16 @@ jobs:
             echo "::error::could not staple $1 after 6 attempts"
             return 1
           }
-          for f in release/WeAssist-*-arm64.dmg release/WeAssist-*-x64.dmg release/mac-arm64/WeAssist.app release/mac/WeAssist.app; do
+          for f in release/Deskbots-*-arm64.dmg release/Deskbots-*-x64.dmg release/mac-arm64/Deskbots.app release/mac/Deskbots.app; do
             staple "$f"
           done
           v=$(node -p "require('./package.json').version")
-          rm -f "release/WeAssist-$v-arm64.zip" "release/WeAssist-$v-x64.zip"
-          ditto -c -k --sequesterRsrc --keepParent release/mac-arm64/WeAssist.app "release/WeAssist-$v-arm64.zip"
-          ditto -c -k --sequesterRsrc --keepParent release/mac/WeAssist.app "release/WeAssist-$v-x64.zip"
+          rm -f "release/Deskbots-$v-arm64.zip" "release/Deskbots-$v-x64.zip"
+          ditto -c -k --sequesterRsrc --keepParent release/mac-arm64/Deskbots.app "release/Deskbots-$v-arm64.zip"
+          ditto -c -k --sequesterRsrc --keepParent release/mac/Deskbots.app "release/Deskbots-$v-x64.zip"
           node scripts/regenerate-blockmaps.mjs \
-            "release/WeAssist-$v-arm64.zip" "release/WeAssist-$v-x64.zip" \
-            "release/WeAssist-$v-arm64.dmg" "release/WeAssist-$v-x64.dmg"
+            "release/Deskbots-$v-arm64.zip" "release/Deskbots-$v-x64.zip" \
+            "release/Deskbots-$v-arm64.dmg" "release/Deskbots-$v-x64.dmg"
           # refreshes every hash from the post-staple bytes and refuses to
           # finish unless the feed matches the files on disk
           node scripts/regenerate-mac-feed.mjs
@@ -319,8 +319,8 @@ jobs:
       - name: Stable-named copies for the README's /latest/download links
         run: |
           v=$(node -p "require('./package.json').version")
-          cp "release/WeAssist-$v-arm64.dmg" release/WeAssist.dmg
-          cp "release/WeAssist-$v-x64.dmg" release/WeAssist-intel.dmg
+          cp "release/Deskbots-$v-arm64.dmg" release/Deskbots.dmg
+          cp "release/Deskbots-$v-x64.dmg" release/Deskbots-intel.dmg
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -397,7 +397,7 @@ jobs:
         shell: bash
         run: |
           v=$(node -p "require('./package.json').version")
-          cp "release/WeAssist-$v-setup.exe" release/WeAssist-setup.exe
+          cp "release/Deskbots-$v-setup.exe" release/Deskbots-setup.exe
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: windows-release
@@ -465,13 +465,13 @@ jobs:
           sudo chmod 4755 release/linux-unpacked/chrome-sandbox
           test "$(stat -c '%U:%G %a' release/linux-unpacked/chrome-sandbox)" = "root:root 4755"
       - name: "Gate: installed browser works with Ubuntu sandbox restrictions"
-        run: node scripts/smoke-browser-bundle.mjs --resources /opt/WeAssist/resources
+        run: node scripts/smoke-browser-bundle.mjs --resources /opt/Deskbots/resources
       - name: "Gate: packaged Linux server discovers its browser"
         env:
-          OMB_SMOKE_DIST: /opt/WeAssist/resources/server
-        run: node scripts/smoke-packaged-server.mjs --browser-bundle /opt/WeAssist/resources/browser-engine
+          OMB_SMOKE_DIST: /opt/Deskbots/resources/server
+        run: node scripts/smoke-packaged-server.mjs --browser-bundle /opt/Deskbots/resources/browser-engine
       - name: "Gate: packaged server and phone helper load as ES modules"
-        run: node scripts/check-module-scopes.mjs /opt/WeAssist/resources
+        run: node scripts/check-module-scopes.mjs /opt/Deskbots/resources
       - name: Smoke the packages
         env:
           OMB_KEEP_SMOKE_DIR: "1"
@@ -483,9 +483,9 @@ jobs:
       - name: Stable-named copies and checksums
         run: |
           v=$(node -p "require('./package.json').version")
-          cp "release/WeAssist-$v-amd64.deb" release/WeAssist-amd64.deb
-          cp "release/WeAssist-$v-x86_64.AppImage" release/WeAssist.AppImage
-          (cd release && sha256sum WeAssist-$v-amd64.deb WeAssist-$v-x86_64.AppImage > SHA256SUMS-ubuntu-x64.txt)
+          cp "release/Deskbots-$v-amd64.deb" release/Deskbots-amd64.deb
+          cp "release/Deskbots-$v-x86_64.AppImage" release/Deskbots.AppImage
+          (cd release && sha256sum Deskbots-$v-amd64.deb Deskbots-$v-x86_64.AppImage > SHA256SUMS-ubuntu-x64.txt)
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: linux-release
@@ -521,20 +521,20 @@ jobs:
         run: |
           required=(
             latest-linux.yml latest-mac.yml latest.yml
-            "WeAssist-$VERSION-amd64.deb"
-            "WeAssist-$VERSION-arm64.dmg"
-            "WeAssist-$VERSION-arm64.dmg.blockmap"
-            "WeAssist-$VERSION-arm64.zip"
-            "WeAssist-$VERSION-arm64.zip.blockmap"
-            "WeAssist-$VERSION-setup.exe"
-            "WeAssist-$VERSION-setup.exe.blockmap"
-            "WeAssist-$VERSION-x64.dmg"
-            "WeAssist-$VERSION-x64.dmg.blockmap"
-            "WeAssist-$VERSION-x64.zip"
-            "WeAssist-$VERSION-x64.zip.blockmap"
-            "WeAssist-$VERSION-x86_64.AppImage"
-            WeAssist-amd64.deb WeAssist-intel.dmg WeAssist-setup.exe
-            WeAssist.AppImage WeAssist.dmg SHA256SUMS-ubuntu-x64.txt
+            "Deskbots-$VERSION-amd64.deb"
+            "Deskbots-$VERSION-arm64.dmg"
+            "Deskbots-$VERSION-arm64.dmg.blockmap"
+            "Deskbots-$VERSION-arm64.zip"
+            "Deskbots-$VERSION-arm64.zip.blockmap"
+            "Deskbots-$VERSION-setup.exe"
+            "Deskbots-$VERSION-setup.exe.blockmap"
+            "Deskbots-$VERSION-x64.dmg"
+            "Deskbots-$VERSION-x64.dmg.blockmap"
+            "Deskbots-$VERSION-x64.zip"
+            "Deskbots-$VERSION-x64.zip.blockmap"
+            "Deskbots-$VERSION-x86_64.AppImage"
+            Deskbots-amd64.deb Deskbots-intel.dmg Deskbots-setup.exe
+            Deskbots.AppImage Deskbots.dmg SHA256SUMS-ubuntu-x64.txt
           )
           for file in "${required[@]}"; do
             test -s "assets/$file" || { echo "::error::missing or empty release asset: $file"; exit 1; }
@@ -550,15 +550,15 @@ jobs:
           const sha512 = (f) => createHash("sha512").update(readFileSync(f)).digest("base64");
           const expected = new Map([
             ["latest-mac.yml", [
-              "WeAssist-${{ needs.prepare.outputs.version }}-x64.zip",
-              "WeAssist-${{ needs.prepare.outputs.version }}-arm64.zip",
-              "WeAssist-${{ needs.prepare.outputs.version }}-x64.dmg",
-              "WeAssist-${{ needs.prepare.outputs.version }}-arm64.dmg",
+              "Deskbots-${{ needs.prepare.outputs.version }}-x64.zip",
+              "Deskbots-${{ needs.prepare.outputs.version }}-arm64.zip",
+              "Deskbots-${{ needs.prepare.outputs.version }}-x64.dmg",
+              "Deskbots-${{ needs.prepare.outputs.version }}-arm64.dmg",
             ]],
-            ["latest.yml", ["WeAssist-${{ needs.prepare.outputs.version }}-setup.exe"]],
+            ["latest.yml", ["Deskbots-${{ needs.prepare.outputs.version }}-setup.exe"]],
             ["latest-linux.yml", [
-              "WeAssist-${{ needs.prepare.outputs.version }}-x86_64.AppImage",
-              "WeAssist-${{ needs.prepare.outputs.version }}-amd64.deb",
+              "Deskbots-${{ needs.prepare.outputs.version }}-x86_64.AppImage",
+              "Deskbots-${{ needs.prepare.outputs.version }}-amd64.deb",
             ]],
           ]);
           let bad = 0;
@@ -610,7 +610,7 @@ jobs:
             done
           }
           ensure_draft "$GITHUB_REPOSITORY" --target "$SHA" \
-            --draft --title "WeAssist $VERSION" --generate-notes
+            --draft --title "Deskbots $VERSION" --generate-notes
           target=$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json targetCommitish --jq .targetCommitish)
           target_sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$target" --jq .sha)
           test "$target_sha" = "$SHA" || {
@@ -651,9 +651,9 @@ jobs:
             done
           }
           ensure_draft milind-soni/openmausbot-releases \
-            --draft --title "WeAssist $VERSION" --notes-file "$RUNNER_TEMP/release-notes.md"
+            --draft --title "Deskbots $VERSION" --notes-file "$RUNNER_TEMP/release-notes.md"
           gh release edit "$tag" --repo milind-soni/openmausbot-releases \
-            --title "WeAssist $VERSION" --notes-file "$RUNNER_TEMP/release-notes.md"
+            --title "Deskbots $VERSION" --notes-file "$RUNNER_TEMP/release-notes.md"
           for file in assets/*; do
             gh release upload "$tag" "$file" --repo milind-soni/openmausbot-releases --clobber
           done

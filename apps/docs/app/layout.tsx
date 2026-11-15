@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: appName,
     template: `%s · ${appName}`,
   },
-  description: 'WeAssist docs: install, configure and extend your local-first team of AI agents. WeAssist is free and open source (Apache 2.0).',
+  description: 'Deskbots docs: install, configure and extend your local-first team of AI agents. Deskbots is free and open source (Apache 2.0).',
   openGraph: {
     title: appName,
     siteName: appName,

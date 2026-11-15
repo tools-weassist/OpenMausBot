@@ -26,7 +26,7 @@ describe("brand.json", () => {
     const file = join(tmpdir(), "omb-brand-missing", "brand.json");
     expect(loadBrand({ file, isEntitled: licensed })).toEqual({ brand: DEFAULT_BRAND, source: "default", file });
     expect(describeBrand(loadBrand({ file, isEntitled: licensed }))).toBe("brand: default");
-    expect(productName(loadBrand({ file, isEntitled: licensed }))).toBe("WeAssist");
+    expect(productName(loadBrand({ file, isEntitled: licensed }))).toBe("Deskbots");
   });
 
   it("applies a valid file on a licensed server", () => {

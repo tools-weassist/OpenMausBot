@@ -50,7 +50,7 @@ describe("programs a boxed bot could have written", () => {
 
   it.skipIf(!posix)("the server's PATH keeps the app's own engines and the system's, never HOME's program folders", () => {
     const home = homedir();
-    const dataDir = join(home, ".openmausbot");
+    const dataDir = join(home, ".deskbots");
     const marker = join(home, "ran");
     plant(join(home, ".local", "bin"), "omb-planted-engine", marker);
     plant(join(home, ".opencode", "bin"), "omb-planted-engine-2", marker);
@@ -72,7 +72,7 @@ describe("programs a boxed bot could have written", () => {
 
   it.skipIf(!posix)("an unboxed spawn neither finds a program in HOME on the PATH it is given nor starts one by its path", async () => {
     const home = homedir();
-    const dataDir = join(home, ".openmausbot");
+    const dataDir = join(home, ".deskbots");
     const marker = join(home, "ran-spawn");
     rmSync(marker, { force: true });
     const planted = plant(join(home, ".local", "bin"), "omb-planted-cli", marker);
@@ -107,9 +107,9 @@ describe("programs a boxed bot could have written", () => {
     mkdirSync(join(home, ".local", "bin"), { recursive: true });
     const runner = new BoxRunner({
       bwrap: "/usr/bin/bwrap", bridge: { socat: null, bridgeScript: "/x/bridge.js", node: "/usr/bin/node" },
-      setup: { dataDir: join(home, ".openmausbot"), home, codeRoots: [], engineRoots: [], bridges: [] }, denyEnv: new Set(),
+      setup: { dataDir: join(home, ".deskbots"), home, codeRoots: [], engineRoots: [], bridges: [] }, denyEnv: new Set(),
     });
-    distrustHomePrograms(home, [join(home, ".openmausbot")]);
+    distrustHomePrograms(home, [join(home, ".deskbots")]);
     const wrapped = runner.wrap({ command: "/usr/bin/true", args: [], env: { PATH: "/usr/bin:/bin", HOME: home }, net: "shared" });
     const path = wrapped.env.PATH!.split(delimiter);
     expect(path.slice(0, 2)).toEqual(["/usr/bin", "/bin"]);

@@ -1,41 +1,41 @@
 import type { HelperFollowupField } from "./helper-followup.ts";
 import type { MausColor } from "./wire.ts";
 
-/** WeAssist: every person's built-in helper. A new install's first bot (its Chief of Staff too); an existing place or
+/** Deskbots: every person's built-in helper. A new install's first bot (its Chief of Staff too); an existing place or
  * person without one is given one once. It can be renamed and recoloured, hidden from the sidebar, never deleted. */
-export const DEFAULT_BOT_NAME = "WeAssist";
+export const DEFAULT_BOT_NAME = "Deskbots";
 export const DEFAULT_BOT_COLOR: MausColor = "chrome";
 
 export interface DefaultBotMark {
-  /** Team Cloud only: the lowercased email of the member this WeAssist belongs to. Absent: the place's own. */
+  /** Team Cloud only: the lowercased email of the member this Deskbots belongs to. Absent: the place's own. */
   person?: string;
 }
 
 export interface DefaultBotFields {
-  /** This bot is its place's (or, on a Team Cloud, its member's) WeAssist. Never deleted or archived. */
+  /** This bot is its place's (or, on a Team Cloud, its member's) Deskbots. Never deleted or archived. */
   defaultBot?: DefaultBotMark;
-  /** Settings → General "Show WeAssist in the sidebar" is off: the bot keeps working, only its sidebar row is gone. */
+  /** Settings → General "Show Deskbots in the sidebar" is off: the bot keeps working, only its sidebar row is gone. */
   sidebarHidden?: boolean;
-  /** Its person has seen WeAssist's first-launch welcome here and chose Add or Not now. */
+  /** Its person has seen Deskbots's first-launch welcome here and chose Add or Not now. */
   welcomed?: boolean;
 }
 
 export interface HelperIntroField extends HelperFollowupField {
-  /** WeAssist's introduction. Clients that know it say it in the viewer's language with example asks; `text` is the
+  /** Deskbots's introduction. Clients that know it say it in the viewer's language with example asks; `text` is the
    * English fallback the model and older clients read. */
   helperIntro?: true;
 }
 
 export const defaultBotPerson = (bot: DefaultBotFields): string => bot.defaultBot?.person?.trim().toLowerCase() ?? "";
 
-/** The WeAssist a viewer sees as theirs: their own on a Team Cloud (by email), else the place's. */
+/** The Deskbots a viewer sees as theirs: their own on a Team Cloud (by email), else the place's. */
 export function viewersDefaultBot<T extends DefaultBotFields>(bots: readonly T[], email?: string | null): T | undefined {
   const person = email?.trim().toLowerCase() ?? "";
   return (person ? bots.find((bot) => bot.defaultBot && defaultBotPerson(bot) === person) : undefined)
     ?? bots.find((bot) => bot.defaultBot && !defaultBotPerson(bot));
 }
 
-/** A WeAssist hidden from the sidebar comes back when it is renamed or moved to another department, unless the same
+/** A Deskbots hidden from the sidebar comes back when it is renamed or moved to another department, unless the same
  * change says whether to show it. Returns the patch to save. */
 export function reshowWhenMoved<P extends { name?: string; section?: string; sidebarHidden?: boolean }>(
   bot: DefaultBotFields & { name: string; section?: string },

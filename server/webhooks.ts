@@ -319,7 +319,7 @@ function serializePayload(payload: JsonValue): string {
     }
   }
   if (text.length <= MAX_EVENT_CHARS) return text;
-  return `${text.slice(0, MAX_EVENT_CHARS)}\n\n[Payload truncated by WeAssist]`;
+  return `${text.slice(0, MAX_EVENT_CHARS)}\n\n[Payload truncated by Deskbots]`;
 }
 
 function previewPayload(payload: JsonValue): string {
@@ -659,7 +659,7 @@ export class WebhookManager {
       payload,
       contentType: "application/json",
       eventName,
-      userAgent: "WeAssist webhook tester",
+      userAgent: "Deskbots webhook tester",
       deliveryId: `test-${randomUUID()}`,
     }, true);
   }

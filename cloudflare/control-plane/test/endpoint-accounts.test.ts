@@ -288,9 +288,9 @@ describe("endpoint account rules", () => {
     const config = accounts(PRIMARY, SECOND);
     const label = `c-${"0123456789abcdef".repeat(2)}`;
     expect(endpointAccountFor(config, { hostname: `${label}.mausbot.si`, provider_account: SECOND.accountId })).toBe(SECOND);
-    expect(endpointAccountFor(config, { hostname: `${label}.openmausbot.com`, provider_account: PRIMARY.accountId })).toBe(PRIMARY);
+    expect(endpointAccountFor(config, { hostname: `${label}.deskbots.com`, provider_account: PRIMARY.accountId })).toBe(PRIMARY);
     for (const [providerAccount, hostname] of [
-      [SECOND.accountId, `${label}.openmausbot.com`],
+      [SECOND.accountId, `${label}.deskbots.com`],
       [PRIMARY.accountId, `${label}.mausbot.si`],
       ["9".repeat(32), `${label}.mausbot.si`],
       [SECOND.accountId, `www.${label}.mausbot.si`],
@@ -308,9 +308,9 @@ describe("endpoint account rules", () => {
     const label = (index: number) => `c-${index.toString(16).padStart(32, "0")}`;
     const cases: Array<[string, string]> = [
       [SECOND.accountId, `${label(1)}.mausbot.si`],
-      [PRIMARY.accountId, `${label(2)}.openmausbot.com`],
+      [PRIMARY.accountId, `${label(2)}.deskbots.com`],
       [SECOND.accountId, `c-${"0123456789abcdef".repeat(2)}.mausbot.si`],
-      [SECOND.accountId, `${label(3)}.openmausbot.com`],
+      [SECOND.accountId, `${label(3)}.deskbots.com`],
       [PRIMARY.accountId, `${label(4)}.mausbot.si`],
       ["9".repeat(32), `${label(5)}.mausbot.si`],
       [SECOND.accountId, `www.${label(6)}.mausbot.si`],

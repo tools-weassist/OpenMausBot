@@ -141,7 +141,7 @@ describe("installCredentialStoreIpc", () => {
       dialog: { showMessageBox: vi.fn(async () => ({ response: 0 })) },
       windowFor: () => null,
       t: (key) => key,
-      appName: () => "WeAssist",
+      appName: () => "Deskbots",
       unreadable: () => true,
       quitting: () => false,
       moveAside: vi.fn(),

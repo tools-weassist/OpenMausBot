@@ -4,7 +4,7 @@
 # partial release. That keeps release credentials and publication authority
 # in the unified release workflow while making every release candidate
 # reproducible from an exact ref. Attach the resulting files to the matching
-# canonical WeAssist release after the smoke test passes.
+# canonical Deskbots release after the smoke test passes.
 name: Package Ubuntu
 
 on:
@@ -83,7 +83,7 @@ jobs:
           sudo chmod 4755 release/linux-unpacked/chrome-sandbox
           test "$(stat -c '%U:%G %a' release/linux-unpacked/chrome-sandbox)" = "root:root 4755"
       - name: Verify the installed browser with Ubuntu sandbox restrictions
-        run: node scripts/smoke-browser-bundle.mjs --resources /opt/WeAssist/resources
+        run: node scripts/smoke-browser-bundle.mjs --resources /opt/Deskbots/resources
       - name: Launch packaged app and verify lifecycle
         env:
           OMB_KEEP_SMOKE_DIR: "1"
@@ -98,20 +98,20 @@ jobs:
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
-          appimage="release/WeAssist-${version}-x86_64.AppImage"
-          deb="release/WeAssist-${version}-amd64.deb"
+          appimage="release/Deskbots-${version}-x86_64.AppImage"
+          deb="release/Deskbots-${version}-amd64.deb"
           test -f "$appimage"
           test -f "$deb"
-          cp "$appimage" release/WeAssist.AppImage
-          cp "$deb" release/WeAssist-amd64.deb
-          chmod 0755 release/WeAssist.AppImage
+          cp "$appimage" release/Deskbots.AppImage
+          cp "$deb" release/Deskbots-amd64.deb
+          chmod 0755 release/Deskbots.AppImage
           (
             cd release
             sha256sum \
               "$(basename "$appimage")" \
               "$(basename "$deb")" \
-              WeAssist.AppImage \
-              WeAssist-amd64.deb > SHA256SUMS-ubuntu-x64.txt
+              Deskbots.AppImage \
+              Deskbots-amd64.deb > SHA256SUMS-ubuntu-x64.txt
           )
           echo "artifact-name=openmausbot-ubuntu-${version}-x64" >> "$GITHUB_OUTPUT"
           echo "version: $version"
@@ -132,10 +132,10 @@ jobs:
         with:
           name: ${{ steps.release.outputs.artifact-name }}
           path: |
-            release/WeAssist-*-amd64.deb
-            release/WeAssist-*-x86_64.AppImage
-            release/WeAssist-amd64.deb
-            release/WeAssist.AppImage
+            release/Deskbots-*-amd64.deb
+            release/Deskbots-*-x86_64.AppImage
+            release/Deskbots-amd64.deb
+            release/Deskbots.AppImage
             release/SHA256SUMS-ubuntu-x64.txt
           if-no-files-found: error
           retention-days: 14

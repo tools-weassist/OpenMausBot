@@ -121,7 +121,7 @@ class StdioAppClient implements AppClient {
   }
 
   async initialize(signal: AbortSignal, extension: boolean): Promise<void> {
-    const params = { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "WeAssist", version: "1" } };
+    const params = { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "Deskbots", version: "1" } };
     let result: unknown;
     if (extension) {
       try {
@@ -159,7 +159,7 @@ class RemoteAppClient implements AppClient {
   get extensions(): "ok" | "refused" | undefined { return this.client.extensions; }
 
   async initialize(signal: AbortSignal, extension: boolean): Promise<void> {
-    const result = await this.client.initialize("WeAssist", signal, extension ? { extensions: { [APP_EXTENSION_KEY]: UI_EXTENSION } } : {});
+    const result = await this.client.initialize("Deskbots", signal, extension ? { extensions: { [APP_EXTENSION_KEY]: UI_EXTENSION } } : {});
     this.serverInfo = isRecord(result) && isRecord(result.serverInfo) ? result.serverInfo : undefined;
   }
 

@@ -63,6 +63,7 @@ export function AboutDialog({ open, onClose }: { open: boolean; onClose: () => v
         <h2 id="about-dialog-title" className="mt-3 text-[17px] font-semibold text-ink">
           {productName()}
         </h2>
+        <p className="mt-0.5 text-[13px] font-medium text-ink-secondary">{t("about.poweredBy")}</p>
         <p className="mt-1 text-[13px] text-ink-secondary">{version}</p>
         {connected && <p className="mt-0.5 text-[13px] text-ink-secondary">{connected}</p>}
         <p className="mt-3 text-[13px] leading-relaxed text-ink-secondary">

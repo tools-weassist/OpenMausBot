@@ -68,7 +68,7 @@ export function departmentOwner(bots: ReadonlyArray<{ createdBy?: string; report
   return first && owners.every((owner) => owner?.email === first.email) ? first : null;
 }
 
-/** A teammate's WeAssist named for its person ("WeAssist · Ada"); any other bot, and the viewer's own WeAssist, by its name. */
+/** A teammate's Deskbots named for its person ("Deskbots · Ada"); any other bot, and the viewer's own Deskbots, by its name. */
 export function teamBotName(bot: { name: string; defaultBot?: { person?: string } }, team: Pick<TeamPeople, "people" | "me"> | null): string {
   const person = bot.defaultBot?.person?.trim().toLowerCase();
   if (!person || !team || team.me?.email.toLowerCase() === person) return bot.name;
@@ -77,7 +77,7 @@ export function teamBotName(bot: { name: string; defaultBot?: { person?: string 
 }
 
 /** The bots a person may set a routine up for: on a team only the ones they can chat with, never a teammate's own
- * WeAssist (`keep`: the bot a routine being changed already has); anywhere else every bot shown. */
+ * Deskbots (`keep`: the bot a routine being changed already has); anywhere else every bot shown. */
 export function schedulableBots<T extends { id: string; hidden?: boolean; yourAccess?: string; defaultBot?: { person?: string } }>(bots: readonly T[], team: Pick<TeamPeople, "me"> | null, keep?: string): T[] {
   const me = team?.me?.email.toLowerCase();
   return bots.filter((bot) => bot.id === keep || (!bot.hidden && (!team || ((bot.yourAccess === undefined || bot.yourAccess === "chat" || bot.yourAccess === "edit")
@@ -85,7 +85,7 @@ export function schedulableBots<T extends { id: string; hidden?: boolean; yourAc
 }
 
 /** Whether this person may rename a bot: anyone off a team; on one an admin, whoever can edit it, and a person their own
- * WeAssist. */
+ * Deskbots. */
 export function mayRename(bot: { yourAccess?: string; defaultBot?: { person?: string } | null }, team: Pick<TeamPeople, "admin" | "me"> | null): boolean {
   if (!team || team.admin || bot.yourAccess === "edit") return true;
   const person = bot.defaultBot?.person?.trim().toLowerCase();

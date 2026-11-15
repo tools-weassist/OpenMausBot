@@ -55,7 +55,7 @@ windowManager.once("error", (error) => {
   }
 }
 
-const title = `WeAssist CUA input safety ${process.pid}`;
+const title = `Deskbots CUA input safety ${process.pid}`;
 const xev = spawn(
   "xev",
   ["-name", title, "-geometry", "320x180+40+40"],

@@ -3,10 +3,10 @@ import { macCuaPermissionMessage, missingMacCuaPermissions } from "./mac-cua-per
 
 describe("macOS CUA permission recovery", () => {
   it("names only the grants the host reported missing", () => {
-    expect(missingMacCuaPermissions("embedded host failed: Screen Recording required; restart WeAssist")).toEqual(["screen"]);
+    expect(missingMacCuaPermissions("embedded host failed: Screen Recording required; restart Deskbots")).toEqual(["screen"]);
     expect(missingMacCuaPermissions("Accessibility and Screen Recording required")).toEqual(["screen", "accessibility"]);
-    expect(macCuaPermissionMessage(["accessibility"])).toContain("Accessibility is required for WeAssist");
-    expect(macCuaPermissionMessage(["screen"])).toContain("relaunch WeAssist");
+    expect(macCuaPermissionMessage(["accessibility"])).toContain("Accessibility is required for Deskbots");
+    expect(macCuaPermissionMessage(["screen"])).toContain("relaunch Deskbots");
   });
 
   it("does not diagnose missing or malformed status as a grant failure", () => {

@@ -81,7 +81,7 @@ describe("the shelf card", () => {
       busy: null, notice: "", error: "", onAdd, onDetails: vi.fn(),
     }));
     const shown = text(markup);
-    for (const line of ["Packages Customer Co shares with you", "Sales desk", "Recommended by Acme Partners", "From Acme Partners", "Added", "Update WeAssist to add this"]) {
+    for (const line of ["Packages Customer Co shares with you", "Sales desk", "Recommended by Acme Partners", "From Acme Partners", "Added", "Update Deskbots to add this"]) {
       expect(shown).toContain(line);
     }
     expect(markup).toContain('aria-label="Add Sales desk"');
